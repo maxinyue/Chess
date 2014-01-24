@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        mavenRepo url: 'http://localhost:8082/nexus/content/groups/public/';
+        mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+    }
+    dependencies {
+        classpath 'com.eriwen:gradle-js-plugin:1.9.0'
+    }
+}
+// Invoke the plugin
+apply plugin: 'js'
+apply plugin: 'idea'
+
+// Declare your sources
+javascript.source {
+    dev {
+        js {
+            srcDir jsSrcDir
+            include "*.js"
+            exclude "*.min.js"
+        }
+    }
+    prod {
+        js {
+            srcDir jsSrcDir
+            include "*.min.js"
+        }
+    }
+}
