@@ -13,7 +13,7 @@ var piece = {
 };
 var count = 0;
 
-var canvas = document.getElementById("game");
+var canvas = document.getElementById("chess");
 /**
  * 绘制棋盘
  */
@@ -50,7 +50,7 @@ var drawChessboard = function () {
     ctx.arc(innerX + (chessboard.lineNumber - 3 - 1) * chessboard.spacing, innerY + (chessboard.lineNumber - 3 - 1) * chessboard.spacing, 5, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fill();
-}
+};
 
 var drawPiece = function (color, x, y) {
     var ctx = canvas.getContext("2d");
