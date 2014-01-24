@@ -1,3 +1,5 @@
+group = 'com.github'
+version = '0.1.4-SNAPSHOT'
 buildscript {
     repositories {
         mavenRepo url: 'http://localhost:8081/nexus/content/groups/public/';
@@ -10,8 +12,13 @@ buildscript {
 // Invoke the plugin
 apply plugin: 'js'
 apply plugin: 'idea'
-
-// Declare your sources
+apply plugin: 'java'
+idea {
+    project {
+        languageLevel = '1.7'
+        ipr.withXml { provider -> provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git' }
+    }
+}
 javascript.source {
     dev {
         js {
