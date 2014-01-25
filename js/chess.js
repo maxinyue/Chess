@@ -239,7 +239,7 @@ var eat_piece = function (source_piece, target_piece) {
     source_piece.position = target_piece.position;
     drawPiece(source_piece);
 };
-
+//比较棋子大小
 var compare_piece = function (source_piece, target_piece) {
     if (Math.abs(source_piece.value - target_piece.value)!=6) {
         return source_piece.value>target_piece.value;
@@ -247,7 +247,7 @@ var compare_piece = function (source_piece, target_piece) {
         return source_piece.value<target_piece.value;
     }
 };
-
+//根据校准后xy定位坐标
 var getPositionByXY = function (x, y) {
     return {
         x: x,
@@ -310,7 +310,7 @@ var valid_across_target_position = function (source_position, target_position) {
         return false;
     }
 };
-
+//是否间隔一枚棋子
 var across_one = function (compareX, same, a1, a2) {
     var j = 0;
     var i;
@@ -370,7 +370,7 @@ var adjustx = function (x) {
 var adjusty = function (y) {
     return y + chessboard.spacing / 2 - (y - chessboard.y - chessboard.padding) % chessboard.spacing;
 };
-
+//从棋子数组中删除数据
 var remove_from_pieces = function (piece) {
     var i;
     var length = pieces.length;
