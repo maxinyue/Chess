@@ -8,47 +8,47 @@ var chessboard = {
 };
 
 var pieces = [
-    {text: '将', color: 'red', value: 6},
-    {text: '士', color: 'red', value: 5},
-    {text: '士', color: 'red', value: 5},
-    {text: '象', color: 'red', value: 4},
-    {text: '象', color: 'red', value: 4},
-    {text: '马', color: 'red', value: 3},
-    {text: '马', color: 'red', value: 3},
-    {text: '车', color: 'red', value: 2},
-    {text: '车', color: 'red', value: 2},
-    {text: '炮', color: 'red', value: 1},
-    {text: '炮', color: 'red', value: 1},
-    {text: '卒', color: 'red', value: 0},
-    {text: '卒', color: 'red', value: 0},
-    {text: '卒', color: 'red', value: 0},
-    {text: '卒', color: 'red', value: 0},
-    {text: '卒', color: 'red', value: 0},
-    {text: '帅', color: 'black', value: 6},
-    {text: '士', color: 'black', value: 5},
-    {text: '士', color: 'black', value: 5},
-    {text: '相', color: 'black', value: 4},
-    {text: '相', color: 'black', value: 4},
-    {text: '马', color: 'black', value: 3},
-    {text: '马', color: 'black', value: 3},
-    {text: '车', color: 'black', value: 2},
-    {text: '车', color: 'black', value: 2},
-    {text: '炮', color: 'black', value: 1},
-    {text: '炮', color: 'black', value: 1},
-    {text: '兵', color: 'black', value: 0},
-    {text: '兵', color: 'black', value: 0},
-    {text: '兵', color: 'black', value: 0},
-    {text: '兵', color: 'black', value: 0},
-    {text: '兵', color: 'black', value: 0}
+    {text: '将', color: 'red', value: 6, obverse: false },
+    {text: '士', color: 'red', value: 5, obverse: false },
+    {text: '士', color: 'red', value: 5, obverse: false },
+    {text: '象', color: 'red', value: 4, obverse: false },
+    {text: '象', color: 'red', value: 4, obverse: false },
+    {text: '马', color: 'red', value: 3, obverse: false },
+    {text: '马', color: 'red', value: 3, obverse: false },
+    {text: '车', color: 'red', value: 2, obverse: false },
+    {text: '车', color: 'red', value: 2, obverse: false },
+    {text: '炮', color: 'red', value: 1, obverse: false },
+    {text: '炮', color: 'red', value: 1, obverse: false },
+    {text: '卒', color: 'red', value: 0, obverse: false },
+    {text: '卒', color: 'red', value: 0, obverse: false },
+    {text: '卒', color: 'red', value: 0, obverse: false },
+    {text: '卒', color: 'red', value: 0, obverse: false },
+    {text: '卒', color: 'red', value: 0, obverse: false },
+    {text: '帅', color: 'black', value: 6, obverse: false },
+    {text: '士', color: 'black', value: 5, obverse: false },
+    {text: '士', color: 'black', value: 5, obverse: false },
+    {text: '相', color: 'black', value: 4, obverse: false },
+    {text: '相', color: 'black', value: 4, obverse: false },
+    {text: '马', color: 'black', value: 3, obverse: false },
+    {text: '马', color: 'black', value: 3, obverse: false },
+    {text: '车', color: 'black', value: 2, obverse: false },
+    {text: '车', color: 'black', value: 2, obverse: false },
+    {text: '炮', color: 'black', value: 1, obverse: false },
+    {text: '炮', color: 'black', value: 1, obverse: false },
+    {text: '兵', color: 'black', value: 0, obverse: false },
+    {text: '兵', color: 'black', value: 0, obverse: false },
+    {text: '兵', color: 'black', value: 0, obverse: false },
+    {text: '兵', color: 'black', value: 0, obverse: false },
+    {text: '兵', color: 'black', value: 0, obverse: false }
 ];
 var positions = [];
 
-var status = {
+var game_status = {
     current: 'choose_side',
-    list:['choose_side','red_turn', 'black_turn']
+    list: ['choose_side', 'red_turn', 'black_turn']
 };
 
-var my_turn=true;
+var my_turn = true;
 
 var initPositions = function () {
     var i;
@@ -90,6 +90,14 @@ var drawChessboard = function () {
     }
 };
 
+var get_indexX = function (x) {
+    return ((x - chessboard.x - chessboard.padding) / chessboard.spacing - 1 / 2);
+};
+
+var get_indexY = function (y) {
+    return ((y - chessboard.y - chessboard.padding) / chessboard.spacing - 1 / 2);
+};
+
 var randomsort = function (a, b) {
     return Math.random() > .5 ? -1 : 1;
 };
@@ -97,9 +105,13 @@ var disorder = function (array) {
     array.sort(randomsort);
 };
 
-var drawPiece = function (color, text, x, y) {
+var drawNewPiece = function (color, text, x, y) {
     drawBlankPiece(x, y);
     drawCharacter(color, text, x, y);
+};
+
+var drawPiece = function (piece) {
+    drawNewPiece(piece.color, piece.text, piece.position.x, piece.position.y);
 };
 
 var randomPositions = function () {
@@ -132,7 +144,7 @@ var drawBlankPiece = function (x, y) {
 
 var drawCharacter = function (color, text, x, y) {
     var ctx = canvas.getContext("2d");
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = color;
     ctx.font = chessboard.padding + 'px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -145,17 +157,83 @@ var init = function () {
     randomPositions();
     randomPieces();
     drawBlankPieces();
-    status.current='choose_side'
+    game_status.current = 'choose_side'
 };
 
 init();
 
 canvas.addEventListener('mousedown', function (e) {
     console.log("layerX" + e.layerX + " layerY" + e.layerY);
-    var x = e.layerX + chessboard.spacing / 2 - (e.layerX - chessboard.x - chessboard.padding) % chessboard.spacing;
-    var y = e.layerY + chessboard.spacing / 2 - (e.layerY - chessboard.y - chessboard.padding) % chessboard.spacing;
-    drawPiece('#ffffff', '车', x, y);
+    var x = adjustx(e.layerX);
+    var y = adjusty(e.layerY);
+    console.log("x=" + x + " y" + y);
+    var piece = getPieceByXY(x, y);
+    if (game_status.current == 'choose_side') {
+        devers_piece(piece);
+        switch_turn(game_status.current, piece);
+    } else if (game_status.current == 'red_turn' || game_status.current == 'black_turn') {
+        if (piece.obverse) {
+
+        } else {
+            devers_piece(piece);
+            switch_turn(game_status.current, piece);
+        }
+    }
 });
+//挑边
+var choose_side = function (piece) {
+
+};
+//翻子
+var devers_piece = function (piece) {
+    if (piece.obverse) {
+        console.log("已经是正面，不能翻子！");
+    } else {
+        drawPiece(piece);
+        piece.obverse = true;
+    }
+};
+
+var switch_turn = function (side_complete, piece) {
+    if (side_complete == 'red_turn') {
+        game_status.current = 'black_turn';
+        $("span").text("黑方");
+    } else if (side_complete == 'black_turn') {
+        game_status.current = 'red_turn';
+        $("span").text("红方");
+    } else if (side_complete == 'choose_side' && piece.color == 'black') {
+        game_status.current = 'red_turn';
+        $("span").text("红方");
+    } else if (side_complete == 'choose_side' && piece.color == 'red') {
+        game_status.current = 'black_turn';
+        $("span").text("黑方");
+    }
+};
+
+var getPieceByXY = function (x, y) {
+    var i;
+    var length = pieces.length;
+    for (i = 0; i < length; i++) {
+        if (pieces[i].position.x == x && pieces[i].position.y == y) {
+            return pieces[i];
+        }
+    }
+    console.log("坐标xy上无棋子");
+    return null;
+};
+
+var isObverse = function (piece) {
+    return piece.obverse;
+};
+
+
+var adjustx = function (x) {
+    return x + chessboard.spacing / 2 - (x - chessboard.x - chessboard.padding) % chessboard.spacing;
+};
+var adjusty = function (y) {
+    return y + chessboard.spacing / 2 - (y - chessboard.y - chessboard.padding) % chessboard.spacing;
+};
+
 
 
 
