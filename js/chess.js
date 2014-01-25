@@ -101,6 +101,7 @@ var get_indexY = function (y) {
 var randomsort = function (a, b) {
     return Math.random() > .5 ? -1 : 1;
 };
+//随机排序
 var disorder = function (array) {
     array.sort(randomsort);
 };
@@ -141,7 +142,7 @@ var drawBlankPiece = function (x, y) {
     ctx.arc(x, y, chessboard.padding / 2, 0, 2 * Math.PI);
     ctx.stroke();
 };
-
+//绘制字体
 var drawCharacter = function (color, text, x, y) {
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = color;
@@ -150,7 +151,7 @@ var drawCharacter = function (color, text, x, y) {
     ctx.textBaseline = 'middle';
     ctx.fillText(text, x, y);
 };
-
+//初始化
 var init = function () {
     drawChessboard();
     initPositions();
@@ -193,7 +194,7 @@ var devers_piece = function (piece) {
         piece.obverse = true;
     }
 };
-
+//转换走子方
 var switch_turn = function (side_complete, piece) {
     if (side_complete == 'red_turn') {
         game_status.current = 'black_turn';
@@ -209,7 +210,7 @@ var switch_turn = function (side_complete, piece) {
         $("span").text("黑方");
     }
 };
-
+//根据坐标获取棋子
 var getPieceByXY = function (x, y) {
     var i;
     var length = pieces.length;
@@ -221,12 +222,12 @@ var getPieceByXY = function (x, y) {
     console.log("坐标xy上无棋子");
     return null;
 };
-
+//是否正面
 var isObverse = function (piece) {
     return piece.obverse;
 };
 
-
+//纠正坐标（鼠标左边纠正到标准坐标方格中心）
 var adjustx = function (x) {
     return x + chessboard.spacing / 2 - (x - chessboard.x - chessboard.padding) % chessboard.spacing;
 };
