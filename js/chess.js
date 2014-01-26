@@ -335,6 +335,17 @@ var across_one = function (compareX, same, a1, a2) {
 
 //转换走子方
 var switch_turn = function (side_complete, piece) {
+    if (win(piece)) {
+        switch (piece.color) {
+            case 'black':
+                alert("黑方胜利！");
+                break;
+            case 'red':
+                alert("红方胜利！");
+                break;
+        }
+        init();
+    }
     if (side_complete == 'red_turn') {
         game_status.current = 'black_turn';
         $("span").text("黑方");
@@ -365,6 +376,19 @@ var getPieceByXY = function (x, y) {
 //是否正面
 var isObverse = function (piece) {
     return piece.obverse;
+};
+var win = function (piece) {
+    if (pieces.length > 16) {
+        return false;
+    }
+    var i;
+    var length = pieces.length;
+    for (i = 0; i < length; i++) {
+        if (pieces[i].color != piece.color) {
+            return false;
+        }
+    }
+    return true;
 };
 
 //校准坐标（鼠标左边校准到标准坐标方格中心）

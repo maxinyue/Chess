@@ -1,5 +1,5 @@
 group = 'com.github'
-version = '0.1.4-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 buildscript {
     repositories {
         mavenRepo url: 'http://localhost:8081/nexus/content/groups/public/';
