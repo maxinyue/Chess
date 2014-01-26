@@ -171,7 +171,7 @@ var init = function () {
     randomPositions();
     randomPieces();
     drawBlankPieces();
-    game_status.current = 'choose_side'
+    game_status.current = 'choose_side';
 };
 
 init();
