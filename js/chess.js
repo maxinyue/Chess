@@ -7,40 +7,7 @@ var chessboard = {
     y: 80
 };
 
-var pieces = [
-    {text: '将', color: 'red', value: 6, obverse: false },
-    {text: '士', color: 'red', value: 5, obverse: false },
-    {text: '士', color: 'red', value: 5, obverse: false },
-    {text: '象', color: 'red', value: 4, obverse: false },
-    {text: '象', color: 'red', value: 4, obverse: false },
-    {text: '马', color: 'red', value: 3, obverse: false },
-    {text: '马', color: 'red', value: 3, obverse: false },
-    {text: '车', color: 'red', value: 2, obverse: false },
-    {text: '车', color: 'red', value: 2, obverse: false },
-    {text: '炮', color: 'red', value: 1, obverse: false },
-    {text: '炮', color: 'red', value: 1, obverse: false },
-    {text: '卒', color: 'red', value: 0, obverse: false },
-    {text: '卒', color: 'red', value: 0, obverse: false },
-    {text: '卒', color: 'red', value: 0, obverse: false },
-    {text: '卒', color: 'red', value: 0, obverse: false },
-    {text: '卒', color: 'red', value: 0, obverse: false },
-    {text: '帅', color: 'black', value: 6, obverse: false },
-    {text: '士', color: 'black', value: 5, obverse: false },
-    {text: '士', color: 'black', value: 5, obverse: false },
-    {text: '相', color: 'black', value: 4, obverse: false },
-    {text: '相', color: 'black', value: 4, obverse: false },
-    {text: '马', color: 'black', value: 3, obverse: false },
-    {text: '马', color: 'black', value: 3, obverse: false },
-    {text: '车', color: 'black', value: 2, obverse: false },
-    {text: '车', color: 'black', value: 2, obverse: false },
-    {text: '炮', color: 'black', value: 1, obverse: false },
-    {text: '炮', color: 'black', value: 1, obverse: false },
-    {text: '兵', color: 'black', value: 0, obverse: false },
-    {text: '兵', color: 'black', value: 0, obverse: false },
-    {text: '兵', color: 'black', value: 0, obverse: false },
-    {text: '兵', color: 'black', value: 0, obverse: false },
-    {text: '兵', color: 'black', value: 0, obverse: false }
-];
+var pieces = [];
 var positions = [];
 
 var game_status = {
@@ -53,9 +20,45 @@ var innerhieght = (chessboard.verticalNumber - 1) * chessboard.spacing;
 var outerWidth = innerWidth + chessboard.padding * 2;
 var outerhieght = innerhieght + chessboard.padding * 2;
 
-var my_turn = true;
+var initPieces = function () {
+    pieces = [
+        {text: '将', color: 'red', value: 6, obverse: false },
+        {text: '士', color: 'red', value: 5, obverse: false },
+        {text: '士', color: 'red', value: 5, obverse: false },
+        {text: '象', color: 'red', value: 4, obverse: false },
+        {text: '象', color: 'red', value: 4, obverse: false },
+        {text: '马', color: 'red', value: 3, obverse: false },
+        {text: '马', color: 'red', value: 3, obverse: false },
+        {text: '车', color: 'red', value: 2, obverse: false },
+        {text: '车', color: 'red', value: 2, obverse: false },
+        {text: '炮', color: 'red', value: 1, obverse: false },
+        {text: '炮', color: 'red', value: 1, obverse: false },
+        {text: '卒', color: 'red', value: 0, obverse: false },
+        {text: '卒', color: 'red', value: 0, obverse: false },
+        {text: '卒', color: 'red', value: 0, obverse: false },
+        {text: '卒', color: 'red', value: 0, obverse: false },
+        {text: '卒', color: 'red', value: 0, obverse: false },
+        {text: '帅', color: 'black', value: 6, obverse: false },
+        {text: '士', color: 'black', value: 5, obverse: false },
+        {text: '士', color: 'black', value: 5, obverse: false },
+        {text: '相', color: 'black', value: 4, obverse: false },
+        {text: '相', color: 'black', value: 4, obverse: false },
+        {text: '马', color: 'black', value: 3, obverse: false },
+        {text: '马', color: 'black', value: 3, obverse: false },
+        {text: '车', color: 'black', value: 2, obverse: false },
+        {text: '车', color: 'black', value: 2, obverse: false },
+        {text: '炮', color: 'black', value: 1, obverse: false },
+        {text: '炮', color: 'black', value: 1, obverse: false },
+        {text: '兵', color: 'black', value: 0, obverse: false },
+        {text: '兵', color: 'black', value: 0, obverse: false },
+        {text: '兵', color: 'black', value: 0, obverse: false },
+        {text: '兵', color: 'black', value: 0, obverse: false },
+        {text: '兵', color: 'black', value: 0, obverse: false }
+    ];
+};
 
 var initPositions = function () {
+    positions = [];
     var i;
     var j;
     var length1 = chessboard.horizonNumber - 1;
@@ -74,7 +77,7 @@ var canvas = document.getElementById("chess");
 var drawChessboard = function () {
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = 'burlywood';
-
+    ctx.strokeStyle = 'black';
     ctx.fillRect(chessboard.x, chessboard.y, outerWidth, outerhieght);
     ctx.strokeRect(chessboard.x + chessboard.padding, chessboard.y + chessboard.padding, innerWidth, innerhieght);
     /**
@@ -166,10 +169,11 @@ var drawCharacter = function (color, text, x, y) {
 };
 //初始化
 var init = function () {
-    drawChessboard();
+    initPieces();
     initPositions();
     randomPositions();
     randomPieces();
+    drawChessboard();
     drawBlankPieces();
     game_status.current = 'choose_side';
 };
@@ -241,10 +245,10 @@ var eat_piece = function (source_piece, target_piece) {
 };
 //比较棋子大小
 var compare_piece = function (source_piece, target_piece) {
-    if (Math.abs(source_piece.value - target_piece.value)!=6) {
-        return source_piece.value>target_piece.value;
-    }else{
-        return source_piece.value<target_piece.value;
+    if (Math.abs(source_piece.value - target_piece.value) != 6) {
+        return source_piece.value > target_piece.value;
+    } else {
+        return source_piece.value < target_piece.value;
     }
 };
 //根据校准后xy定位坐标
