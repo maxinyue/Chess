@@ -1,5 +1,6 @@
 package cn.maxinyue;
 
+import cn.maxinyue.util.DbMigration;
 import org.glassfish.embeddable.*;
 import org.glassfish.embeddable.archive.ScatteredArchive;
 import org.h2.tools.Server;
@@ -37,9 +38,14 @@ public class Laucher {
     }
 
     public void startServer() throws GlassFishException, SQLException {
-        Server server = Server.createWebServer();
+        Server server = Server.createTcpServer("-baseDir","~/test");
         server.start();
+        dbmigration();
         glassfish.start();
+    }
+
+    private void dbmigration(){
+        DbMigration.migrate("org.h2.Driver","jdbc:h2:~/test","","");
     }
 
     public void deployServer() throws GlassFishException, IOException, URISyntaxException {

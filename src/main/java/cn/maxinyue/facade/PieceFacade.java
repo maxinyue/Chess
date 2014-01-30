@@ -16,7 +16,7 @@ public class PieceFacade {
     private EntityManager entityManager;
 
     public List<Piece> random() {
-        return null;
+        return entityManager.createQuery("select p from Piece p").getResultList();
     }
 
     public EntityManager getEntityManager() {
