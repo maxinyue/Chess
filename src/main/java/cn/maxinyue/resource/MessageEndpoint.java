@@ -28,10 +28,14 @@ public class MessageEndpoint {
             case LOGOUT:
                 break;
             case INIT:
+                sendInitChesses(message.getUser(), session);
                 break;
             case PAIR:
                 break;
         }
+    }
+
+    private void sendInitChesses(String user, Session session) {
     }
 
     private void addNewSession(String user, Session session) {
