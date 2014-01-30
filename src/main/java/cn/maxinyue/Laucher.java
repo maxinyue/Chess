@@ -2,12 +2,14 @@ package cn.maxinyue;
 
 import org.glassfish.embeddable.*;
 import org.glassfish.embeddable.archive.ScatteredArchive;
+import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 
 /**
  * Created by Obama on 14-1-30.
@@ -34,7 +36,9 @@ public class Laucher {
         glassfish = GlassFishRuntime.bootstrap().newGlassFish(glassfishProperties);
     }
 
-    public void startServer() throws GlassFishException {
+    public void startServer() throws GlassFishException, SQLException {
+        Server server = Server.createWebServer();
+        server.start();
         glassfish.start();
     }
 
@@ -52,7 +56,7 @@ public class Laucher {
         glassfish.stop();
     }
 
-    public static void main(String[] args) throws GlassFishException, IOException, URISyntaxException {
+    public static void main(String[] args) throws GlassFishException, IOException, URISyntaxException, SQLException {
         Laucher laucher = new Laucher();
         laucher.startServer();
         laucher.deployServer();

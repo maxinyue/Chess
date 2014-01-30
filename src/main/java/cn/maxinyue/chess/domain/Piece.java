@@ -20,7 +20,7 @@ public class Piece {
     @Column
     private String color;
     @Column
-    private String value;
+    private int value;
     @Column
     private boolean obverse;
     @Embedded
@@ -50,11 +50,11 @@ public class Piece {
         this.color = color;
     }
 
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
