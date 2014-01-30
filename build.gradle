@@ -1,4 +1,4 @@
-group = 'com.github'
+group = 'cn.maxinyue'
 version = '0.0.1-SNAPSHOT'
 buildscript {
     repositories {
@@ -19,6 +19,15 @@ idea {
         ipr.withXml { provider -> provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git' }
     }
 }
+sourceSets {
+    main {
+        resources {
+            srcDirs += 'src/main/webapp'
+        }
+    }
+}
+sourceCompatibility = '1.7'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 javascript.source {
     dev {
         js {
@@ -33,4 +42,17 @@ javascript.source {
             include "*.min.js"
         }
     }
+}
+
+dependencies {
+    compile "javax.websocket:javax.websocket-api:1.0"
+    compile "javax.servlet:javax.servlet-api:3.1.0"
+    compile "org.slf4j:slf4j-api:1.7.5"
+    compile "org.eclipse.persistence:javax.persistence:2.1.0"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.2.0"
+    compile "com.fasterxml.jackson.core:jackson-annotations:2.2.0"
+    compile "com.fasterxml.jackson.core:jackson-core:2.2.0"
+    compile "org.glassfish.hk2.external:javax.inject:2.2.0"
+    testCompile "org.glassfish.main.extras:glassfish-embedded-all:4.0"
+    testCompile "junit:junit:4.10"
 }
