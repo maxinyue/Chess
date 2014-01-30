@@ -1,6 +1,7 @@
 package cn.maxinyue.chess.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class Chess {
+public class Piece {
     @Column
     @Id
     private String id;
@@ -22,6 +23,8 @@ public class Chess {
     private String value;
     @Column
     private boolean obverse;
+    @Embedded
+    private Position position;
 
     public String getId() {
         return id;
@@ -61,5 +64,13 @@ public class Chess {
 
     public void setObverse(boolean obverse) {
         this.obverse = obverse;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

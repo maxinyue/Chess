@@ -36,6 +36,7 @@ public class MessageEndpoint {
     }
 
     private void sendInitChesses(String user, Session session) {
+
     }
 
     private void addNewSession(String user, Session session) {
