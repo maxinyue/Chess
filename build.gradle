@@ -13,6 +13,7 @@ buildscript {
 apply plugin: 'js'
 apply plugin: 'idea'
 apply plugin: 'java'
+apply plugin:'application'
 idea {
     project {
         languageLevel = '1.7'
@@ -28,6 +29,7 @@ sourceSets {
 }
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+mainClassName = "cn.maxinyue.Laucher"
 javascript.source {
     dev {
         js {
@@ -53,6 +55,9 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-annotations:2.2.0"
     compile "com.fasterxml.jackson.core:jackson-core:2.2.0"
     compile "org.glassfish.hk2.external:javax.inject:2.2.0"
-    testCompile "org.glassfish.main.extras:glassfish-embedded-all:4.0"
+    compile "org.glassfish.main.extras:glassfish-embedded-all:4.0"
     testCompile "junit:junit:4.10"
+    runtime "ch.qos.logback:logback-classic:1.0.13"
+    runtime "ch.qos.logback:logback-core:1.1.0"
+    runtime "org.slf4j:jul-to-slf4j:1.7.5"
 }
