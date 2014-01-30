@@ -1,4 +1,4 @@
-package cn.maxinyue.util;
+package cn.maxinyue.chess.util;
 
 import com.googlecode.flyway.core.Flyway;
 

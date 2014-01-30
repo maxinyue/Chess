@@ -1,6 +1,6 @@
 package cn.maxinyue;
 
-import cn.maxinyue.util.DbMigration;
+import cn.maxinyue.chess.util.DbMigration;
 import org.glassfish.embeddable.*;
 import org.glassfish.embeddable.archive.ScatteredArchive;
 import org.h2.tools.Server;

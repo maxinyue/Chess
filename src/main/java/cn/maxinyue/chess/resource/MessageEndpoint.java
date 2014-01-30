@@ -1,4 +1,4 @@
-package cn.maxinyue.resource;
+package cn.maxinyue.chess.resource;
 
 import cn.maxinyue.chess.domain.ConnectMessage;
 import org.slf4j.Logger;

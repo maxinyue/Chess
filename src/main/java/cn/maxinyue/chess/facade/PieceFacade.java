@@ -1,10 +1,10 @@
-package cn.maxinyue.facade;
+package cn.maxinyue.chess.facade;
 
 import cn.maxinyue.chess.domain.Piece;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class PieceFacade {
 
-    @PersistenceContext
+    @Inject
     private EntityManager entityManager;
 
     public List<Piece> random() {

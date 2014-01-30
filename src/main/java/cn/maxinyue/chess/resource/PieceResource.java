@@ -1,7 +1,7 @@
-package cn.maxinyue.resource;
+package cn.maxinyue.chess.resource;
 
 import cn.maxinyue.chess.domain.Piece;
-import cn.maxinyue.facade.PieceFacade;
+import cn.maxinyue.chess.facade.PieceFacade;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
