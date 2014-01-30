@@ -3,21 +3,27 @@ version = '0.0.1-SNAPSHOT'
 buildscript {
     repositories {
         mavenRepo url: 'http://localhost:8081/nexus/content/groups/public/';
-    //    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+        //    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
     }
     dependencies {
         classpath 'com.eriwen:gradle-js-plugin:1.9.0'
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
     }
 }
 // Invoke the plugin
 apply plugin: 'js'
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin:'application'
+apply plugin: 'application'
+apply plugin: 'fatjar'
 idea {
     project {
         languageLevel = '1.7'
-        ipr.withXml { provider -> provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git' }
+        ipr.withXml { provider ->
+            provider.node.component.find {
+                it.@name == 'VcsDirectoryMappings'
+            }.mapping.@vcs = 'Git'
+        }
     }
 }
 sourceSets {
@@ -30,6 +36,14 @@ sourceSets {
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 mainClassName = "cn.maxinyue.Laucher"
+
+fatJar {
+    baseName = 'chess'
+    manifest {
+        attributes 'Main-Class': 'cn.maxinyue.Laucher'
+    }
+    exclude 'META-INF/MANIFEST.MF', '**/*.RSA', '**/*.SF', '**/*.DSA'
+}
 javascript.source {
     dev {
         js {
@@ -60,4 +74,9 @@ dependencies {
     runtime "ch.qos.logback:logback-classic:1.0.13"
     runtime "ch.qos.logback:logback-core:1.1.0"
     runtime "org.slf4j:jul-to-slf4j:1.7.5"
+}
+
+repositories {
+    mavenRepo url: 'http://localhost:8081/nexus/content/groups/public/';
+    //    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
 }
