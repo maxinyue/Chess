@@ -38,14 +38,14 @@ public class Laucher {
     }
 
     public void startServer() throws GlassFishException, SQLException {
-        Server server = Server.createTcpServer("-baseDir","~/test");
-        server.start();
+//        Server server = Server.createWebServer("-baseDir","~/test","-webAllowOthers","-webDaemon","-trace");
+//        server.start();
         dbmigration();
         glassfish.start();
     }
 
     private void dbmigration(){
-        DbMigration.migrate("org.h2.Driver","jdbc:h2:~/test","","");
+        DbMigration.migrate("org.h2.Driver","jdbc:h2:tcp://localhost/c:/h2data/test","sa","");
     }
 
     public void deployServer() throws GlassFishException, IOException, URISyntaxException {

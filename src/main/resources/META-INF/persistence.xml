@@ -8,12 +8,13 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!--<jta-data-source>mysqlDS</jta-data-source>-->
         <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
+        <class>cn.maxinyue.chess.domain.Piece</class>
         <properties>
-            <property name="hibernate.connection.username" value=""/>
-            <property name="hibernate.transaction.factory_class" value="org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <!--<property name="hibernate.transaction.factory_class" value="org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory"/>-->
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
             <property name="hibernate.connection.password" value=""/>
-            <property name="hibernate.connection.url" value="jdbc:h2:~/test"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:tcp://localhost/c:/h2data/test"/>
             <!--<property name="hibernate.hbm2ddl.auto" value="create"/>-->
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.show_sql" value="true"/>
