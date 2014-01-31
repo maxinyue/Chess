@@ -127,6 +127,10 @@ window.chess = function (pieces, chessboard) {
     };
     self.firstMouseDown = function (e) {
 //        console.log("layerX" + e.layerX + " layerY" + e.layerY);
+        if(game_status.current != 'choose_side'&&game_status.current!=self.side){
+            console.log("不是您的回合！");
+            return;
+        }
         if (!position_in_chessboard(e.layerX, e.layerY)) {
             console.log("无效点击在棋盘之外");
             return;
@@ -311,15 +315,19 @@ window.chess = function (pieces, chessboard) {
             $("span").text("红方");
         } else if (side_complete == 'choose_side' && piece.color == 'black') {
             game_status.current = 'red_turn';
+            self.side='black_turn';
             $("span").text("红方");
         } else if (side_complete == 'choose_side' && piece.color == 'red') {
             game_status.current = 'black_turn';
+            self.side='red_turn';
             $("span").text("黑方");
         }
+
         websocket().sendRequest({
             sender: piece.color,
             receiver: opposite(piece.color),
             MessageType: 'TURN',
+            content:game_status.current,
             pieces: pieces
         });
     };
