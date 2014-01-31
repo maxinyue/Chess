@@ -1,6 +1,7 @@
 package cn.maxinyue.chess.facade;
 
-import cn.maxinyue.chess.resource.ChessBoard;
+import cn.maxinyue.chess.domain.ChessBoard;
+import cn.maxinyue.chess.resource.ChessBoardResource;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
