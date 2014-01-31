@@ -23,17 +23,29 @@ public class MessageEndpoint {
     public void handleMessage(ConnectMessage message, Session session) throws IOException, EncodeException {
         switch (message.getMessageType()) {
             case LOGIN:
-                addNewSession(message.getUser(), session);
+                addNewSession(message.getSender(), session);
                 break;
             case LOGOUT:
                 break;
             case INIT:
-                sendInitChesses(message.getUser(), session);
+                sendInitChesses(message.getSender(), session);
                 break;
             case PAIR:
                 break;
+            case TURN:
+                sendOtherPieces(message,session);
+                break;
         }
     }
+
+    private void sendOtherPieces(ConnectMessage message, Session session) {
+        try {
+            connections.get(message.getReciever()).getBasicRemote().sendObject(message);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void sendInitChesses(String user, Session session) {
 

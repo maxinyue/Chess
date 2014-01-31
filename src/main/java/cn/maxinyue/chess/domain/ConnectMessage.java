@@ -1,5 +1,7 @@
 package cn.maxinyue.chess.domain;
 
+import java.util.List;
+
 /**
  * Created by Obama on 14-1-30.
  */
@@ -13,14 +15,19 @@ public class ConnectMessage {
         LOGIN,
         INIT,
         LOGOUT,
-        PAIR
+        PAIR,
+        TURN
     }
 
     private MessageType messageType;
 
-    private String user;
+    private String sender;
+
+    private String reciever;
 
     private String content;
+
+    private List<Piece> pieces;
 
     public MessageType getMessageType() {
         return messageType;
@@ -30,12 +37,20 @@ public class ConnectMessage {
         this.messageType = messageType;
     }
 
-    public String getUser() {
-        return user;
+    public String getSender() {
+        return sender;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getReciever() {
+        return reciever;
+    }
+
+    public void setReciever(String reciever) {
+        this.reciever = reciever;
     }
 
     public String getContent() {
@@ -44,5 +59,13 @@ public class ConnectMessage {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public List<Piece> getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(List<Piece> pieces) {
+        this.pieces = pieces;
     }
 }

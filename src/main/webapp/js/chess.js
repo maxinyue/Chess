@@ -21,8 +21,8 @@ window.chess = function (pieces, chessboard) {
         var i;
         var length = pieces.length;
         for (i = 0; i < length; i++) {
-            pieces[i].position.x=(pieces[i].position.indexX + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.x
-            pieces[i].position.y=(pieces[i].position.indexY + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.y
+            pieces[i].position.x = (pieces[i].position.indexX + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.x
+            pieces[i].position.y = (pieces[i].position.indexY + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.y
         }
     };
 
@@ -58,33 +58,16 @@ window.chess = function (pieces, chessboard) {
         return ((y - chessboard.y - chessboard.padding) / chessboard.spacing - 1 / 2);
     };
 
-    self.randomsort = function (a, b) {
-        return Math.random() > .5 ? -1 : 1;
-    };
-
-    //随机排序
-    self.disorder = function (array) {
-        array.sort(randomsort);
-    };
-
     self.drawNewPiece = function (color, text, x, y) {
         drawBlankPiece(x, y);
         drawCharacter(color, text, x, y);
     };
 
     self.drawPiece = function (piece) {
-        drawNewPiece(piece.color, piece.text, piece.position.x, piece.position.y);
-    };
-
-    self.randomPositions = function () {
-        disorder(positions);
-    };
-
-    self.randomPieces = function () {
-        var i;
-        var length = pieces.length;
-        for (i = 0; i < length; i++) {
-            pieces[i].position = positions[i];
+        if (piece.obverse) {
+            drawNewPiece(piece.color, piece.text, piece.position.x, piece.position.y);
+        } else if (!piece.obverse) {
+            drawBlankPiece(piece.position.x, piece.position.y);
         }
     };
 
@@ -126,7 +109,6 @@ window.chess = function (pieces, chessboard) {
     };
 
 
-
     self.secondMouseDown = function (e1) {
         if (!position_in_chessboard(e1.layerX, e1.layerY)) {
             console.log("无效点击在棋盘之外");
@@ -164,23 +146,29 @@ window.chess = function (pieces, chessboard) {
         }
     };
 
+    self.redrawAll = function () {
+        drawChessboard();
+        drawAllPieces(pieces);
+    };
+
+    self.drawAllPieces = function (pieces) {
+        var i;
+        var length = pieces.length;
+        for (i = 0; i < length; i++) {
+            drawPiece(pieces[i]);
+        }
+    };
+
     //初始化
     self.init = function () {
-        // initPieces();
         initPositions();
-//        randomPositions();
-//        randomPieces();
-        drawChessboard();
-        drawBlankPieces();
+        redrawAll();
         game_status.current = 'choose_side';
         removeAllEvents(canvas, 'mousedown');
         addEvent(canvas, 'mousedown', firstMouseDown, false);
-//        canvas.removeEventListener('mousedown', secondMouseDown, false);
-//        canvas.addEventListener('mousedown', firstMouseDown, false);
     };
 
     self.init();
-
 
 //判断吃子方式或者兑子
     self.judge = function (source_piece, target_piece) {
@@ -311,6 +299,7 @@ window.chess = function (pieces, chessboard) {
                     break;
             }
             init();
+            return;
         }
         if (side_complete == 'red_turn') {
             game_status.current = 'black_turn';
@@ -325,7 +314,22 @@ window.chess = function (pieces, chessboard) {
             game_status.current = 'black_turn';
             $("span").text("黑方");
         }
+        websocket.sendRequest({
+            sender: piece.color,
+            receiver: opposite(piece.color),
+            MessageType: 'TURN',
+            pieces: pieces
+        });
     };
+
+    self.opposite = function (color) {
+        if (color == 'black') {
+            return 'red';
+        } else {
+            return 'black';
+        }
+    };
+
 //根据坐标获取棋子
     self.getPieceByXY = function (x, y) {
         var i;
@@ -376,7 +380,7 @@ window.chess = function (pieces, chessboard) {
         }
     };
 
-    self.getCurrentPieces=function(){
+    self.getCurrentPieces = function () {
         return pieces;
     };
 

@@ -1,15 +1,6 @@
-angular.module('websocketModule', []).factory('messageService', ['$q', '$rootScope', function ($q, $rootScope) {
+window.websocket=function(){
 
     var Service = {};
-
-    Service.business_messages = [];
-
-    Service.normal_messages = [];
-
-    Service.normal_messages_history = [];
-
-    Service.system_messages = [];
-
     var ws = new WebSocket("ws://localhost:8085/chess/websocket");
 
     ws.onopen = function () {
@@ -24,21 +15,10 @@ angular.module('websocketModule', []).factory('messageService', ['$q', '$rootSco
     };
 
     ws.onmessage = function (message) {
-        var messsage = JSON.parse(message.data);
-        console.log(message);
-        if (messsage.messageType == 'BUSINESS') {
-            Service.business_messages.push({
-                id: UUID.generate(),
-                message: messsage
-            });
-            $rootScope.$broadcast('BUSINESS_MESSAGE');
-        } else if (messsage.messageType == 'NORMAL') {
-            Service.normal_messages.push(messsage);
-            Service.normal_messages_history.push(messsage);
-            $rootScope.$broadcast('NORMAL_MESSAGE');
-        } else if (messsage.messageType == 'SYSTEM') {
-            Service.system_messages.push(messsage);
-            $rootScope.$broadcast('SYSTEM_MESSAGE');
+        var msg = JSON.parse(message.data);
+        console.log(msg);
+        if (msg.messageType == 'TURN') {
+            chess.drawAllPieces(msg);
         }
     };
 
@@ -66,4 +46,4 @@ angular.module('websocketModule', []).factory('messageService', ['$q', '$rootSco
     };
 
     return Service;
-}]);
+};
