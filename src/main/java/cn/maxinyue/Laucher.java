@@ -66,7 +66,7 @@ public class Laucher {
         }
         System.out.println("archiveFile is " + archiveFile);
         ScatteredArchive archive = new ScatteredArchive("chess",
-                ScatteredArchive.Type.WAR, archiveFile.getParentFile());
+                ScatteredArchive.Type.WAR,archiveFile.getParentFile());
         if (!url.toURI().isOpaque()) {
             archive.addClassPath(archiveFile.getParentFile());
         } else {

@@ -118,6 +118,11 @@ task copyToLib(type: Copy) {
     from configurations.runtime
 }
 
+task copyFileToDir(type: Copy) {
+    from 'src/main/webapp'
+    into "$buildDir/libs"
+}
+
 war {
     baseName = "chess"
 }
