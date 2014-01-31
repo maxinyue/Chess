@@ -2,13 +2,19 @@ package cn.maxinyue.chess.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
 /**
  * Created by Obama on 14-1-31.
  */
+@Entity
 @Embeddable
 public class Position {
+    @Id
+    @Column
+    private String id;
     @Column
     private BigDecimal x;
     @Column
@@ -48,5 +54,13 @@ public class Position {
 
     public void setIndexY(int indexY) {
         this.indexY = indexY;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

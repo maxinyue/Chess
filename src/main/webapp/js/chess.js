@@ -1,15 +1,6 @@
 window.chess = function (pieces, chessboard) {
     var self = this;
-//    self.chessboard = {
-//        horizonNumber: 9,
-//        verticalNumber: 5,
-//        spacing: 50,
-//        padding: 40,
-//        x: 80,
-//        y: 80
-//    };
 
-//    self.pieces = [];
     self.positions = [];
     self.canvas = document.getElementById("chess");
 
@@ -27,15 +18,11 @@ window.chess = function (pieces, chessboard) {
     self.outerhieght = innerhieght + chessboard.padding * 2;
 
     self.initPositions = function () {
-        self.positions = [];
         var i;
-        var j;
-        var length1 = chessboard.horizonNumber - 1;
-        var length2 = chessboard.verticalNumber - 1;
-        for (i = 0; i < length1; i++) {
-            for (j = 0; j < length2; j++) {
-                positions.push({indexX: i, indexY: j, x: (i + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.x, y: (j + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.y});
-            }
+        var length = pieces.length;
+        for (i = 0; i < length; i++) {
+            pieces[i].position.x=(pieces[i].position.indexX + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.x
+            pieces[i].position.y=(pieces[i].position.indexY + 1 / 2) * chessboard.spacing + chessboard.padding + chessboard.y
         }
     };
 
@@ -181,8 +168,8 @@ window.chess = function (pieces, chessboard) {
     self.init = function () {
         // initPieces();
         initPositions();
-        randomPositions();
-        randomPieces();
+//        randomPositions();
+//        randomPieces();
         drawChessboard();
         drawBlankPieces();
         game_status.current = 'choose_side';
@@ -387,6 +374,10 @@ window.chess = function (pieces, chessboard) {
                 break;
             }
         }
+    };
+
+    self.getCurrentPieces=function(){
+        return pieces;
     };
 
     return self;

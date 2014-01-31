@@ -10,6 +10,7 @@
         <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
         <class>cn.maxinyue.chess.domain.Piece</class>
         <class>cn.maxinyue.chess.domain.ChessBoard</class>
+        <class>cn.maxinyue.chess.domain.Position</class>
         <properties>
             <property name="hibernate.connection.username" value=""/>
             <!--<property name="hibernate.transaction.factory_class" value="org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory"/>-->

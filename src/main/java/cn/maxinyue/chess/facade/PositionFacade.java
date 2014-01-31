@@ -1,22 +1,21 @@
 package cn.maxinyue.chess.facade;
 
-import cn.maxinyue.chess.domain.Piece;
+import cn.maxinyue.chess.domain.Position;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
  * Created by Obama on 14-1-31.
  */
-public class PieceFacade {
+public class PositionFacade {
 
     @Inject
     private EntityManager entityManager;
 
-    public List<Piece> getAllPieces() {
-        return entityManager.createQuery("select p from Piece p").getResultList();
+    public List<Position> getAll(){
+        return entityManager.createQuery("select p from Position p").getResultList();
     }
 
     public EntityManager getEntityManager() {
