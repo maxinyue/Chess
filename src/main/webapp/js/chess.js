@@ -127,10 +127,10 @@ window.chess = function (pieces, chessboard) {
     };
     self.firstMouseDown = function (e) {
 //        console.log("layerX" + e.layerX + " layerY" + e.layerY);
-        if(game_status.current != 'choose_side'&&game_status.current!=self.side){
-            console.log("不是您的回合！");
-            return;
-        }
+//        if(game_status.current != 'choose_side'&&game_status.current!=self.side){
+//            console.log("不是您的回合！");
+//            return;
+//        }
         if (!position_in_chessboard(e.layerX, e.layerY)) {
             console.log("无效点击在棋盘之外");
             return;
