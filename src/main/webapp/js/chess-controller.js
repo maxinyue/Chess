@@ -24,10 +24,14 @@ chessApp.controller("chessController", ['$scope', '$http', function chessControl
         var url = baseApiUrl + "/chessboard/" + id;
         $http.get(url).success(function (data) {
             $scope.chessboard = data;
-            chess($scope.pieces, $scope.chessboard);
+            chess($scope.pieces, $scope.chessboard).init();
         }).error(function (data, status, headers, config) {
                 console.log("查询棋盘数据出错！");
             });
     };
     $scope.getPieces();
+
+    $scope.newChess = function () {
+        $scope.getPieces();
+    };
 }]);

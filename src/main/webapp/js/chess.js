@@ -1,4 +1,4 @@
-window.chess = function (peices,chessboard) {
+window.chess = function (pieces, chessboard) {
     var self = this;
 //    self.chessboard = {
 //        horizonNumber: 9,
@@ -11,6 +11,10 @@ window.chess = function (peices,chessboard) {
 
 //    self.pieces = [];
     self.positions = [];
+    self.canvas = document.getElementById("chess");
+
+    self.source_piece = null;
+    self.target_piece = null;
 
     self.game_status = {
         current: 'choose_side',
@@ -21,43 +25,6 @@ window.chess = function (peices,chessboard) {
     self.innerhieght = (chessboard.verticalNumber - 1) * chessboard.spacing;
     self.outerWidth = innerWidth + chessboard.padding * 2;
     self.outerhieght = innerhieght + chessboard.padding * 2;
-
-//    self.initPieces = function () {
-//        self.pieces = [
-//            {text: '将', color: 'red', value: 6, obverse: false },
-//            {text: '士', color: 'red', value: 5, obverse: false },
-//            {text: '士', color: 'red', value: 5, obverse: false },
-//            {text: '象', color: 'red', value: 4, obverse: false },
-//            {text: '象', color: 'red', value: 4, obverse: false },
-//            {text: '马', color: 'red', value: 3, obverse: false },
-//            {text: '马', color: 'red', value: 3, obverse: false },
-//            {text: '车', color: 'red', value: 2, obverse: false },
-//            {text: '车', color: 'red', value: 2, obverse: false },
-//            {text: '炮', color: 'red', value: 1, obverse: false },
-//            {text: '炮', color: 'red', value: 1, obverse: false },
-//            {text: '卒', color: 'red', value: 0, obverse: false },
-//            {text: '卒', color: 'red', value: 0, obverse: false },
-//            {text: '卒', color: 'red', value: 0, obverse: false },
-//            {text: '卒', color: 'red', value: 0, obverse: false },
-//            {text: '卒', color: 'red', value: 0, obverse: false },
-//            {text: '帅', color: 'black', value: 6, obverse: false },
-//            {text: '士', color: 'black', value: 5, obverse: false },
-//            {text: '士', color: 'black', value: 5, obverse: false },
-//            {text: '相', color: 'black', value: 4, obverse: false },
-//            {text: '相', color: 'black', value: 4, obverse: false },
-//            {text: '马', color: 'black', value: 3, obverse: false },
-//            {text: '马', color: 'black', value: 3, obverse: false },
-//            {text: '车', color: 'black', value: 2, obverse: false },
-//            {text: '车', color: 'black', value: 2, obverse: false },
-//            {text: '炮', color: 'black', value: 1, obverse: false },
-//            {text: '炮', color: 'black', value: 1, obverse: false },
-//            {text: '兵', color: 'black', value: 0, obverse: false },
-//            {text: '兵', color: 'black', value: 0, obverse: false },
-//            {text: '兵', color: 'black', value: 0, obverse: false },
-//            {text: '兵', color: 'black', value: 0, obverse: false },
-//            {text: '兵', color: 'black', value: 0, obverse: false }
-//        ];
-//    };
 
     self.initPositions = function () {
         self.positions = [];
@@ -72,7 +39,7 @@ window.chess = function (peices,chessboard) {
         }
     };
 
-    self.canvas = document.getElementById("chess");
+
     /**
      * 绘制棋盘
      */
@@ -107,7 +74,8 @@ window.chess = function (peices,chessboard) {
     self.randomsort = function (a, b) {
         return Math.random() > .5 ? -1 : 1;
     };
-//随机排序
+
+    //随机排序
     self.disorder = function (array) {
         array.sort(randomsort);
     };
@@ -169,20 +137,25 @@ window.chess = function (peices,chessboard) {
         ctx.textBaseline = 'middle';
         ctx.fillText(text, x, y);
     };
-//初始化
-    self.init = function () {
-       // initPieces();
-        initPositions();
-        randomPositions();
-        randomPieces();
-        drawChessboard();
-        drawBlankPieces();
-        game_status.current = 'choose_side';
-    };
 
-    self.init();
+
+
+    self.secondMouseDown = function (e1) {
+        if (!position_in_chessboard(e1.layerX, e1.layerY)) {
+            console.log("无效点击在棋盘之外");
+            return;
+        }
+        target_piece = getPieceByXY(adjustx(e1.layerX), adjusty(e1.layerY));
+        if (target_piece == null) {
+            move_piece(source_piece, getPositionByXY(adjustx(e1.layerX), adjusty(e1.layerY)));
+        } else {
+            judge(source_piece, target_piece);
+        }
+        removeAllEvents(canvas, 'mousedown');
+        addEvent(canvas, 'mousedown', firstMouseDown, false);
+    };
     self.firstMouseDown = function (e) {
-        console.log("layerX" + e.layerX + " layerY" + e.layerY);
+//        console.log("layerX" + e.layerX + " layerY" + e.layerY);
         if (!position_in_chessboard(e.layerX, e.layerY)) {
             console.log("无效点击在棋盘之外");
             return;
@@ -190,34 +163,38 @@ window.chess = function (peices,chessboard) {
         var x = adjustx(e.layerX);
         var y = adjusty(e.layerY);
         console.log("x=" + x + " y" + y);
-        var piece = getPieceByXY(x, y);
-        if (piece == null) {
+        source_piece = getPieceByXY(x, y);
+        if (source_piece == null) {
             console.log("请选择棋子");
             return;
         }
-        if (game_status.current == 'choose_side' || !piece.obverse) {
-            devers_piece(piece);
-            switch_turn(game_status.current, piece);
-        } else if (right_turn(piece.color)) {
-            var secondMouseDown = function (e1) {
-                if (!position_in_chessboard(e1.layerX, e1.layerY)) {
-                    console.log("无效点击在棋盘之外");
-                    return;
-                }
-                var target_piece = getPieceByXY(adjustx(e1.layerX), adjusty(e1.layerY));
-                if (target_piece == null) {
-                    move_piece(piece, getPositionByXY(adjustx(e1.layerX), adjusty(e1.layerY)));
-                } else {
-                    judge(piece, target_piece);
-                }
-                canvas.removeEventListener('mousedown', secondMouseDown);
-                canvas.addEventListener('mousedown', firstMouseDown);
-            };
-            canvas.removeEventListener('mousedown', firstMouseDown);
-            canvas.addEventListener('mousedown', secondMouseDown);
+        if (game_status.current == 'choose_side' || !source_piece.obverse) {
+            devers_piece(source_piece);
+            switch_turn(game_status.current, source_piece);
+        } else if (right_turn(source_piece.color)) {
+            removeAllEvents(canvas, 'mousedown');
+            addEvent(canvas, 'mousedown', secondMouseDown, false);
         }
     };
-    canvas.addEventListener('mousedown', firstMouseDown);
+
+    //初始化
+    self.init = function () {
+        // initPieces();
+        initPositions();
+        randomPositions();
+        randomPieces();
+        drawChessboard();
+        drawBlankPieces();
+        game_status.current = 'choose_side';
+        removeAllEvents(canvas, 'mousedown');
+        addEvent(canvas, 'mousedown', firstMouseDown, false);
+//        canvas.removeEventListener('mousedown', secondMouseDown, false);
+//        canvas.addEventListener('mousedown', firstMouseDown, false);
+    };
+
+    self.init();
+
+
 //判断吃子方式或者兑子
     self.judge = function (source_piece, target_piece) {
         console.log("judge");
