@@ -9,8 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  * Created by Obama on 14-1-30.
@@ -38,7 +42,7 @@ public class Laucher {
     }
 
     public void startServer() throws GlassFishException, SQLException {
-        Server server = Server.createTcpServer(new String[]{"-baseDir","~/"});
+        Server server = Server.createTcpServer(new String[]{"-baseDir", "~/"});
 
         server.start();
         logger.debug("url is "+server.getURL());
@@ -52,11 +56,15 @@ public class Laucher {
 
     public void deployServer() throws GlassFishException, IOException, URISyntaxException {
         Deployer deployer = glassfish.getDeployer();
-        File archiveFile = new File(Laucher.class.getClassLoader().getResource("html").toURI()).getParentFile();
+        URI uri=Laucher.class.getClassLoader().getResource(".").toURI();
+
+        System.out.println("uri is " + uri);
+        File archiveFile = new File(uri);
         logger.debug("file is " + archiveFile);
         ScatteredArchive archive = new ScatteredArchive("chess",
                 ScatteredArchive.Type.WAR, archiveFile);
         archive.addClassPath(archiveFile);
+        System.out.println("archive uri is "+archive.toURI());
         String appName = deployer.deploy(archive.toURI(), "--contextroot=chess");
     }
 

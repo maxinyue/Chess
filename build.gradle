@@ -18,6 +18,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'fatjar'
 apply plugin: 'flyway'
+apply plugin: 'war'
 idea {
     project {
         languageLevel = '1.7'
@@ -51,7 +52,7 @@ fatJar {
     manifest {
         attributes 'Main-Class': 'cn.maxinyue.Laucher'
     }
-    exclude 'META-INF/MANIFEST.MF', '**/*.RSA', '**/*.SF', '**/*.DSA'
+    exclude 'META-INF/MANIFEST.MF', '**/*.RSA', '**/*.SF', '**/*.DSA', 'license/*.txt'
 }
 javascript.source {
     dev {
@@ -92,4 +93,8 @@ dependencies {
 repositories {
     mavenRepo url: 'http://localhost:8081/nexus/content/groups/public/';
     //    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+}
+
+war {
+    baseName = "chess"
 }
