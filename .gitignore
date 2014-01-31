@@ -13,3 +13,7 @@
 /Chess.iml
 /Chess.ipr
 /*.bak
+
+/out
+/derby.log
+/build
