@@ -17,6 +17,8 @@ window.chess = function (pieces, chessboard) {
     self.outerWidth = innerWidth + chessboard.padding * 2;
     self.outerhieght = innerhieght + chessboard.padding * 2;
 
+    self.side=null;
+
     self.initPositions = function () {
         var i;
         var length = pieces.length;
@@ -220,8 +222,8 @@ window.chess = function (pieces, chessboard) {
         if (piece.obverse) {
             console.log("已经是正面，不能翻子！");
         } else {
-            drawPiece(piece);
             piece.obverse = true;
+            drawPiece(piece);
         }
     };
 //移动棋子
@@ -314,7 +316,7 @@ window.chess = function (pieces, chessboard) {
             game_status.current = 'black_turn';
             $("span").text("黑方");
         }
-        websocket.sendRequest({
+        websocket().sendRequest({
             sender: piece.color,
             receiver: opposite(piece.color),
             MessageType: 'TURN',
