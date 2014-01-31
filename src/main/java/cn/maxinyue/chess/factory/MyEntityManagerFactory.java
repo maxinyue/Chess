@@ -7,9 +7,10 @@ import javax.persistence.Persistence;
 
 public class MyEntityManagerFactory {
 
+    public EntityManagerFactory entityManagerFactory=Persistence.createEntityManagerFactory("domain");
+
     @Produces
     public EntityManager getEntityManager() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("domain");
         return entityManagerFactory.createEntityManager();
     }
 }
