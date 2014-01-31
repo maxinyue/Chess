@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -45,26 +46,33 @@ public class Laucher {
         Server server = Server.createTcpServer(new String[]{"-baseDir", "~/"});
 
         server.start();
-        logger.debug("url is "+server.getURL());
+        logger.debug("url is " + server.getURL());
         dbmigration();
         glassfish.start();
     }
 
-    private void dbmigration(){
-        DbMigration.migrate("org.h2.Driver","jdbc:h2:tcp://localhost/~/test","","");
+    private void dbmigration() {
+        DbMigration.migrate("org.h2.Driver", "jdbc:h2:tcp://localhost/~/test", "", "");
     }
 
     public void deployServer() throws GlassFishException, IOException, URISyntaxException {
         Deployer deployer = glassfish.getDeployer();
-        URI uri=Laucher.class.getClassLoader().getResource(".").toURI();
-
-        System.out.println("uri is " + uri);
-        File archiveFile = new File(uri);
-        logger.debug("file is " + archiveFile);
+        URL url = Laucher.class.getClassLoader().getResource("html");
+        File archiveFile = null;
+        if (!url.toURI().isOpaque()) {
+            archiveFile = new File(url.toURI());
+        } else {
+            archiveFile = new File(((JarURLConnection) (url.openConnection())).getJarFileURL().toURI());
+        }
+        System.out.println("archiveFile is " + archiveFile);
         ScatteredArchive archive = new ScatteredArchive("chess",
-                ScatteredArchive.Type.WAR, archiveFile);
-        archive.addClassPath(archiveFile);
-        System.out.println("archive uri is "+archive.toURI());
+                ScatteredArchive.Type.WAR, archiveFile.getParentFile());
+        if (!url.toURI().isOpaque()) {
+            archive.addClassPath(archiveFile.getParentFile());
+        } else {
+            archive.addClassPath(archiveFile);
+        }
+        System.out.println("archive uri is " + archive.toURI());
         String appName = deployer.deploy(archive.toURI(), "--contextroot=chess");
     }
 

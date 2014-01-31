@@ -9,6 +9,7 @@ buildscript {
         classpath 'com.eriwen:gradle-js-plugin:1.9.0'
         classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
         classpath "com.googlecode.flyway:flyway-gradle-plugin:2.2.1"
+        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
     }
 }
 // Invoke the plugin
@@ -19,6 +20,8 @@ apply plugin: 'application'
 apply plugin: 'fatjar'
 apply plugin: 'flyway'
 apply plugin: 'war'
+apply plugin: 'gradle-one-jar'
+
 idea {
     project {
         languageLevel = '1.7'
@@ -45,7 +48,14 @@ flyway {
 }
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-mainClassName = "cn.maxinyue.Laucher"
+
+
+
+task awesomeFunJar(type: OneJar) {
+    mainClass = 'cn.maxinyue.Laucher'
+    archiveName = 'chess.jar'
+    oneJarConfiguration  = configurations.compile
+}
 
 fatJar {
     baseName = 'chess'
@@ -90,9 +100,22 @@ dependencies {
 //    runtime "org.slf4j:jul-to-slf4j:1.7.5"
 }
 
+jar {
+    manifest{
+        def manifestClasspath = configurations.runtime.collect { it.getName() }.join(' ')
+        attributes 'Class-Path': manifestClasspath
+        attributes 'Main-Class': 'cn.maxinyue.Laucher'
+    }
+}
+
 repositories {
     mavenRepo url: 'http://localhost:8081/nexus/content/groups/public/';
     //    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from configurations.runtime
 }
 
 war {
